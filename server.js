@@ -29,9 +29,13 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Jalankan Server
-app.listen(PORT, () => {
-    console.log(`[NEXUS-PRO] Server berjalan di http://localhost:${PORT}`);
-});
-module.exports = app;
+// Ganti bagian app.listen kamu dengan kode ini:
+if (process.env.NODE_ENV !== 'production') {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
 
+// Tambahkan ini di paling bawah jika belum ada:
+module.exports = app;
