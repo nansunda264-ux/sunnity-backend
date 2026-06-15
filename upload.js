@@ -1,22 +1,8 @@
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
 
-// Pastikan folder uploads ada
-const uploadDir = './uploads';
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-    }
-});
+// Gunakan memoryStorage agar file ditahan di dalam RAM (Memory) sementara,
+// bukan disimpan ke hard disk/folder, karena sistem Vercel bersifat Read-Only.
+const storage = multer.memoryStorage();
 
 const upload = multer({ 
     storage: storage,
